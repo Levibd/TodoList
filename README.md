@@ -25,6 +25,19 @@ O sistema atende aos requisitos obrigatórios do desafio **ZG-Hero**:
 * **Menu Interativo:** Interface via terminal amigável e tratada contra erros de digitação.
 * **Validação de Datas:** Conversão e validação de datas (LocalDate).
 
+## ⏰ Nova Feature: Alarmes Inteligentes (v2.0)
+
+Agora o sistema conta com um monitoramento em tempo real para prazos de tarefas.
+
+### Como funciona:
+1. Ao criar uma tarefa, o usuário define a **Data e Hora** de término (ex: `20/10/2023 15:00`).
+2. O usuário pode optar por ativar um **Alarme** e definir a **antecedência** (ex: avisar 30 minutos antes).
+3. Uma *Thread* em background verifica periodicamente as tarefas. Se o horário atual entrar na zona de aviso, uma notificação visual é disparada no console: `🚨 [ALARME] A tarefa X vence em breve!`.
+
+### Tecnologias aplicadas:
+- **LocalDateTime:** Para precisão de minutos.
+- **Java Threads:** Para execução concorrente do monitoramento sem travar o menu principal.
+
 ## 💻 Tecnologias e Padrões Utilizados
 
 * **Java JDK:** Linguagem principal.
