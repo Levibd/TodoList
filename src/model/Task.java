@@ -1,7 +1,8 @@
 package model;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 public class Task {
 
@@ -12,9 +13,12 @@ public class Task {
     private String name;
     private String description;
     private Integer priority;
-    private LocalDate endDate;
+    private LocalDateTime endDate;
     private Category category;
     private Status status;
+    private boolean hasAlarm;
+    private int minutesBefore;
+
 
     private Task(TaskBuilder builder) {
         this.name = builder.name;
@@ -23,6 +27,8 @@ public class Task {
         this.priority = builder.priority;
         this.category = builder.category;
         this.status = builder.status;
+        this.hasAlarm = builder.hasAlarm;
+        this.minutesBefore = builder.minutesBefore;
     }
 
     public String getName() {
@@ -35,7 +41,7 @@ public class Task {
         return priority;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
@@ -43,13 +49,19 @@ public class Task {
 
     public Status getStatus() {return status;}
 
+    public boolean hasAlarm() {return hasAlarm;}
+
+    public int getMinutesBefore() {return minutesBefore;}
+
     public static class TaskBuilder {
         private String name;
         private String description;
         private Integer priority;
-        private LocalDate endDate;
+        private LocalDateTime endDate;
         private Category category;
         private Status status;
+        private boolean hasAlarm;
+        private int minutesBefore;
 
         public TaskBuilder name(String name) {
             this.name = name;
@@ -66,7 +78,7 @@ public class Task {
             return this;
         }
 
-        public TaskBuilder endDate(LocalDate endDate) {
+        public TaskBuilder endDate(LocalDateTime endDate) {
             this.endDate = endDate;
             return this;
         }
@@ -78,6 +90,12 @@ public class Task {
 
         public TaskBuilder status(Status status) {
             this.status = status;
+            return this;
+        }
+
+        public TaskBuilder withAlarm(boolean hasAlarm, int minutesBefore) {
+            this.hasAlarm = hasAlarm;
+            this.minutesBefore = minutesBefore;
             return this;
         }
 
@@ -102,7 +120,7 @@ public class Task {
         this.priority = priority;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

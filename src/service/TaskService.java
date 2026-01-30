@@ -4,6 +4,7 @@ import model.Category;
 import model.Status;
 import model.Task;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import java.util.ArrayList;
@@ -51,5 +52,37 @@ public class TaskService {
         }
     }
 
+    public void startAlarmMonitoring() {
+        Thread watcher = new Thread(() -> {
+            while (true) {
+                try {
+                    checkAlarms();
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        watcher.setDaemon(true);
+        watcher.start();
+    }
 
+    private void checkAlarms() {
+        LocalDateTime now = LocalDateTime.now();
+
+        for (Task task : repository) {
+            if (task.hasAlarm() && task.getEndDate() != null) {
+
+                LocalDateTime triggerTime = task.getEndDate().minusMinutes(task.getMinutesBefore());
+
+                if (now.isAfter(triggerTime) && now.isBefore(task.getEndDate())) {
+                    System.out.println("\n\n🚨 [ALARME] A tarefa '" + task.getName() +
+                            "' vence em breve! (" + task.getEndDate() + ")\n");
+                }
+            }
+        }
+    }
 }
+
+
+

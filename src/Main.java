@@ -4,6 +4,7 @@ import model.Task;
 import service.TaskService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -13,7 +14,8 @@ public class Main {
 
         Scanner input = new Scanner(System.in);
         TaskService taskService = new TaskService();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        taskService.startAlarmMonitoring();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
 
         while (true) {
@@ -56,15 +58,25 @@ public class Main {
                     String statStr = input.nextLine().toUpperCase();
                     Status status = Status.valueOf(statStr);
 
-                    System.out.print("Data de Término (dd/MM/yyyy): ");
+                    System.out.print("Data de Término (dd/MM/yyyy HH:mm): ");
                     String dataStr = input.nextLine();
-                    LocalDate endDate = null;
+                    LocalDateTime endDate = null;
 
                     try {
-                        endDate = LocalDate.parse(dataStr, formatter);
+                        endDate = LocalDateTime.parse(dataStr, formatter);
                     } catch (DateTimeParseException e) {
                         System.out.println("⚠️ Data inválida! Definindo para hoje + 7 dias.");
-                        endDate = LocalDate.now().plusDays(7);
+                        endDate = LocalDateTime.now().plusDays(7);
+                    }
+
+                    System.out.print("Deseja ativar alarme? (S/N): ");
+                    String respAlarm = input.nextLine();
+                    boolean hasAlarm = respAlarm.equalsIgnoreCase("S");
+                    int minutesBefore = 0;
+
+                    if (hasAlarm) {
+                        System.out.print("Quantos minutos antes deseja ser avisado? (ex: 30): ");
+                        minutesBefore = Integer.parseInt(input.nextLine());
                     }
 
                     Task newTask = Task.builder()
@@ -74,6 +86,7 @@ public class Main {
                             .category(categoria)
                             .status(status)
                             .endDate(endDate)
+                            .withAlarm(hasAlarm, minutesBefore)
                             .build();
 
                     taskService.createTask(newTask);
