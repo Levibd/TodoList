@@ -82,6 +82,17 @@ public class TaskService {
             }
         }
     }
+
+    public void updateTaskStatus(String name, Status newStatus) {
+        for (Task task : repository) {
+            if (task.getName().equalsIgnoreCase(name)) {
+                task.setStatus(newStatus);
+                System.out.println("Status da tarefa '" + name + "' atualizado para " + newStatus);
+                return;
+            }
+        }
+        System.out.println("Tarefa '" + name + "' não encontrada para atualização.");
+    }
 }
 
 
