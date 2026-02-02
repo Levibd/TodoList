@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List - ZG Hero</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>📝 TODO List <span id="clock"></span></h1>
+        </header>
+
+        <div class="card form-section">
+            <input type="hidden" id="taskId"> <div class="input-group">
+                <input type="text" id="title" placeholder="Título da Tarefa" required>
+            </div>
+            
+            <div class="input-group">
+                <input type="text" id="description" placeholder="Descrição..." required>
+            </div>
+
+            <div class="row">
+                <select id="status">
+                    <option value="TODO">A Fazer (TODO)</option>
+                    <option value="DOING">Fazendo (DOING)</option>
+                    <option value="DONE">Feito (DONE)</option>
+                </select>
+                <input type="datetime-local" id="deadline">
+            </div>
+
+            <button onclick="saveTask()" id="btnSave">Salvar Tarefa</button>
+            <button onclick="clearForm()" id="btnCancel" style="display:none; background-color: #6c757d;">Cancelar</button>
+        </div>
+
+        <div class="filters">
+            <button onclick="filterTasks('ALL')" class="active" id="filter-ALL">Todas</button>
+            <button onclick="filterTasks('TODO')" id="filter-TODO">A Fazer</button>
+            <button onclick="filterTasks('DOING')" id="filter-DOING">Fazendo</button>
+            <button onclick="filterTasks('DONE')" id="filter-DONE">Concluídas</button>
+        </div>
+
+        <ul id="taskList">
+            </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
