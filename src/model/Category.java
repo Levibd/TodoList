@@ -6,5 +6,6 @@ public enum Category {
     PESSOAL,
     SAUDE,
     FINANCAS,
+    LAZER,
     OUTROS;
 }
