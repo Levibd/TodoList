@@ -43,6 +43,16 @@
             <button onclick="filterTasks('DONE')" id="filter-DONE">Concluídas</button>
         </div>
 
+        <div class="bulk-actions card">
+            <span>Selecionadas:</span>
+            <select id="bulkStatusSelect">
+                <option value="TODO">Mudar para TODO</option>
+                <option value="DOING">Mudar para DOING</option>
+                <option value="DONE">Mudar para DONE</option>
+            </select>
+            <button onclick="applyBulkAction()" class="btn-bulk">Aplicar em Massa</button>
+        </div>
+
         <ul id="taskList">
             </ul>
     </div>
