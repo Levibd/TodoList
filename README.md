@@ -5,6 +5,8 @@
 
 ![Badge Concluído](http://img.shields.io/static/v1?label=STATUS&message=CONCLUIDO&color=GREEN&style=for-the-badge)
 ![Badge Java](http://img.shields.io/static/v1?label=LANGUAGE&message=JAVA&color=RED&style=for-the-badge)
+![Badge Gradle](http://img.shields.io/static/v1?label=BUILD&message=GRADLE&color=02303A&style=for-the-badge)
+![Badge Spock](http://img.shields.io/static/v1?label=TESTS&message=SPOCK_FRAMEWORK&color=blue&style=for-the-badge)
 
 ## 🎯 Sobre o Projeto
 
@@ -16,14 +18,10 @@ O objetivo principal foi implementar a lógica de negócios e estruturação de 
 
 O sistema atende aos requisitos obrigatórios do desafio **ZG-Hero**:
 
-* **CRD de Tarefas:** Criação, Leitura (Listagem) e Remoção de tarefas.
-* **Rebalanceamento Automático:** Ao inserir uma nova tarefa, a lista é automaticamente reordenada baseada na Prioridade (Nível 5 aparece primeiro).
-* **Filtros Avançados:**
-    * Listar por Categoria (Trabalho, Estudos, etc).
-    * Listar por Status (Todo, Doing, Done).
-    * Listar por Prioridade.
-* **Menu Interativo:** Interface via terminal amigável e tratada contra erros de digitação.
-* **Validação de Datas:** Conversão e validação de datas (LocalDate).
+* **CRUD Completo de Tarefas:** Criação, Leitura (Listagem), Atualização de Status e Remoção de tarefas.
+* **Rebalanceamento Automático:** Ao inserir uma nova tarefa, a lista é automaticamente reordenada baseada na Prioridade.
+* **Cobertura de Testes (Novo!):** Testes unitários cobrindo caminhos felizes e de exceção utilizando BDD (Behavior-Driven Development).
+* **Filtros Avançados...** (Mantenha o resto que já estava)
 
 ## ⏰ Nova Feature: Alarmes Inteligentes (v2.0)
 
@@ -40,22 +38,29 @@ Agora o sistema conta com um monitoramento em tempo real para prazos de tarefas.
 
 ## 💻 Tecnologias e Padrões Utilizados
 
-* **Java JDK:** Linguagem principal.
-* **Arquitetura MVC (Simplificada):** Separação de responsabilidades em:
-    * `model`: Representação dos dados (Task, Enums).
-    * `service`: Regras de negócio, ordenação e filtros.
-    * `view/main`: Interação com o usuário via console.
-* **Design Pattern - Builder:** Utilizado na criação do objeto `Task` para manter o código limpo e flexível, evitando construtores gigantes.
-* **Java Streams API:** Utilizada para filtrar as listas de forma eficiente e declarativa.
+* **Java JDK:** Linguagem principal (com uso intensivo de Streams API).
+* **Groovy & Spock Framework:** Utilizados para a suíte de testes unitários automatizados.
+* **Gradle:** Gerenciador de dependências e build do projeto.
+* **Clean Code:** Refatoração de métodos para garantir o Princípio da Responsabilidade Única (SRP).
+* **Arquitetura MVC:** Camadas bem definidas (`controller`, `model`, `service`, `view`).
+* **Design Patterns:** * **Builder:** Na criação do objeto `Task` para flexibilidade.
+    * **Singleton:** No gerenciamento do leitor de inputs (`InputReader`).
 
-## 📂 Estrutura do Projeto
+## 📂 Estrutura do Projeto (Standard Directory Layout)
 
 ```text
-src/
-├── Main.java  # Ponto de entrada (Menu e Interação)         
-├── model/
-│   ├── Task.java          # Classe com Builder Pattern
-│   ├── Category.java      # Enum de Categorias
-│   └── Status.java        # Enum de Status
-└── service/
-    └── TaskService.java   # Lógica (CRUD, Filtros e Ordenação)
+TodoList/
+├── build.gradle                 # Configurações do Gradle e dependências
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       ├── controller/      # Intermediário entre View e Service
+│   │       ├── model/           # Entidades e Enums (Task, Category, Status)
+│   │       ├── service/         # Regras de negócio e armazenamento em memória
+│   │       ├── utils/           # Utilitários (InputReader)
+│   │       ├── view/            # Menus e interação com usuário
+│   │       └── Main.java        # Ponto de entrada
+│   └── test/
+│       └── groovy/__
+│           └── service/
+│               └── TaskServiceSpec.groovy # Testes automatizados em Spock

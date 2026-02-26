@@ -14,16 +14,20 @@ import java.util.stream.Collectors;
 public class TaskService {
 
     private List<Task> repository = new ArrayList<>();
-    private Long countId = 1L;
+
 
     public void createTask(Task task) {
+
+        if (task == null || task.getName() == null || task.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da tarefa é obrigatório.");
+        }
         repository.add(task);
 
         repository.sort((t1, t2) -> t2.getPriority().compareTo(t1.getPriority()));
     }
 
     public List<Task> showAllTasks() {
-        return repository;
+        return new ArrayList<>(repository);
     }
 
     public List<Task> showTasksByStatus(Status status) {
@@ -43,13 +47,8 @@ public class TaskService {
     }
 
 
-    public void deleteTask(String name) {
-        boolean remove = repository.removeIf(x -> x.getName().equalsIgnoreCase(name));
-        if (remove) {
-            System.out.println("Tarefa removida com sucesso!");
-        } else {
-            System.out.println("Tarefa não encontrada para remoção.");
-        }
+    public boolean deleteTask(String name) {
+        return repository.removeIf(task -> task.getName().equalsIgnoreCase(name));
     }
 
     public void startAlarmMonitoring() {
@@ -59,6 +58,7 @@ public class TaskService {
                     checkAlarms();
                     Thread.sleep(60000);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     e.printStackTrace();
                 }
             }
@@ -83,15 +83,14 @@ public class TaskService {
         }
     }
 
-    public void updateTaskStatus(String name, Status newStatus) {
+    public boolean updateTaskStatus(String name, Status newStatus) {
         for (Task task : repository) {
             if (task.getName().equalsIgnoreCase(name)) {
                 task.setStatus(newStatus);
-                System.out.println("Status da tarefa '" + name + "' atualizado para " + newStatus);
-                return;
+                return true;
             }
         }
-        System.out.println("Tarefa '" + name + "' não encontrada para atualização.");
+        return false;
     }
 }
 
