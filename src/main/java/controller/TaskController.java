@@ -32,7 +32,6 @@ public class TaskController {
 
         System.out.print("Prioridade (1-5): ");
         int prioridade = input.readInt();
-        input.readString();
 
         System.out.print("Categoria (TRABALHO, ESTUDOS, LAZER...): ");
         String catStr = input.readString().toUpperCase();
@@ -43,8 +42,21 @@ public class TaskController {
         Status status = Status.valueOf(statStr);
 
         System.out.print("Data de Término (dd/MM/yyyy HH:mm): ");
-        String dataStr = input.readString();
-        LocalDateTime endDate = null;
+        String dataStr = null;
+        try {
+            dataStr = input.readValidDate();
+        } catch (IllegalArgumentException e) {
+            e.getMessage();
+        }
+
+        LocalDateTime finalDate;
+        if (dataStr != null) {
+            finalDate = formatter.dateFormatter(dataStr);
+        } else {
+            finalDate = LocalDateTime.now().plusDays(7);
+            System.out.println("⚠️ Tarefa criada com prazo automático de 7 dias.");
+        }
+
 
 
 
@@ -57,7 +69,7 @@ public class TaskController {
                 .priority(prioridade)
                 .category(categoria)
                 .status(status)
-                .endDate(formatter.dateFormatter(dataStr))
+                .endDate(finalDate)
                 .withAlarm(hasAlarm, minutesBefore)
                 .build();
 
